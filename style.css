@@ -1,0 +1,44 @@
+html, body {
+    height: 100vh;
+    margin: 0; /* Remove a margem padrão do body */
+}
+
+body {
+    box-sizing: border-box; /* Garante que o padding e a borda sejam incluídos nas dimensões */
+    padding: 20px; /* Exemplo de padding */
+    width: calc(100% - 40px); /* Largura total menos o padding */
+    height: calc(100% - 40px); /* Altura total menos o padding */
+}
+
+#app {
+    height: 100%;
+    width: 100%;
+}
+
+.all {
+    height: 100%;
+    width: 100%;
+}
+
+#list-poke {
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.poke-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+.poke-item:hover {
+    background-color: #f0f0f0;
+}
+
+.poke-img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}

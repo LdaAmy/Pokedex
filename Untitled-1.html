@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>POKEDEX</title>
+    <link rel="icon" href="img/images-removebg-preview (1).png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="app">
+        <div class="all">
+            <div class="m-3 bg-primary shadow h-100 w-100">
+                <nav class="bg-light shadow w-100 d-flex"
+                    style="height: 10vh; justify-content: center; align-items: center;">
+                    <img src="img/download-removebg-preview.png" height="60px">
+                </nav>
+                <div class="d-flex w-100 h-100" style="justify-content: center; align-items: center; flex-direction: row;">
+                    <div class="bg-light h-100 w-50 shadow d-flex" style="justify-content: center; align-items: center; flex-direction: column;">
+                        <img src="img/7126739-icone-de-ponto-de-interrogacao-gratis-vetor.jpg" class="img-poke" height="500px">
+                        <div class="infos">
+                            <p class="poke-name-view" style="font-size: 20px;"></p>
+                            <p class="tipo-poke" style="font-size: 20px;"></p>
+                        </div>
+                    </div>
+                    <div class="bg-light shadow h-100 w-50 d-flex flex-column" id="list-poke" style="overflow-y: auto; height: 90vh;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const pokeNameView = document.querySelector('.poke-name-view');
+        const tipoPoke = document.querySelector('.tipo-poke');
+        const pokeImg = document.querySelector('.img-poke');
+        const listPoke = document.getElementById('list-poke');
+    
+        // Função para buscar informações do Pokémon
+        async function fetchPokemon(pokemonId) {
+            const url = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
+            
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Erro: ${response.status}`);
+                }
+                const data = await response.json();
+    
+                // Atualiza as informações na interface
+                pokeNameView.textContent = data.name.charAt(0).toUpperCase() + data.name.slice(1);
+                tipoPoke.textContent = data.types.map(type => type.type.name).join(', ');
+                pokeImg.src = data.sprites.front_default;
+            } catch (error) {
+                console.error(error);
+                pokeNameView.textContent = 'Pokémon não encontrado.';
+                tipoPoke.textContent = '';
+                pokeImg.src = '';  // Limpa a imagem
+            }
+        }
+    
+        // Função para listar todos os Pokémon
+        async function fetchAllPokemons() {
+            const url = 'https://pokeapi.co/api/v2/pokemon?limit=150'; // Limite de 150 para não sobrecarregar
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+    
+                data.results.forEach(pokemon => {
+                    const div = document.createElement('div');
+                    div.classList.add('poke-item');
+                    div.innerHTML = `
+                        <img src="https://img.pokemondb.net/sprites/home/normal/${pokemon.name}.png" alt="${pokemon.name}" class="poke-img">
+                        <p class="poke-name">${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</p>
+                    `;
+                    div.addEventListener('click', () => fetchPokemon(pokemon.url.split('/')[6]));
+                    listPoke.appendChild(div);
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    
+        // Carregar Pokémon ao abrir a página
+        fetchAllPokemons();
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
