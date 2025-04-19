@@ -28,7 +28,7 @@ const pokeNameView = document.querySelector('.poke-name-view');
     
         // Função para listar todos os Pokémon
         async function fetchAllPokemons() {
-            const url = 'https://pokeapi.co/api/v2/pokemon?limit=150'; // Limite de 150 para não sobrecarregar
+            const url = 'https://pokeapi.co/api/v2/pokemon?limit=275'; // Limite de 150 para não sobrecarregar
             try {
                 const response = await fetch(url);
                 const data = await response.json();
